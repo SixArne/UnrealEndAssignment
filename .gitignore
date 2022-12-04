@@ -5,6 +5,9 @@
 # Visual Studio 2015 user specific files
 .vs/
 
+ToSubmit
+Build
+
 # Compiled Object files
 *.slo
 *.lo

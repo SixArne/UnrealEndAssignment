@@ -56,11 +56,14 @@ void AFlagCollectible::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActo
 {
 	UE_LOG(LogTemp, Warning, TEXT("Flag got taken"));
 
-	// Destroy actor (will happen after tick ends)
-	this->Destroy();
-
 	// Inform meshes that flag was taken
 	ArmAllDynamicMeshes(OtherActor);
+
+	OnFlagCollectedDelegate.Broadcast();
+
+	// D
+	this->SetActorEnableCollision(false);
+	m_StaticMeshComponent->SetVisibility(false);
 }
 
 /************************************************************************/

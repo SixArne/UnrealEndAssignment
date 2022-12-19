@@ -9,6 +9,8 @@
 
 #include "FlagCollectible.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFlagCollectedSignature);
+
 UCLASS()
 class UNREALENDASSIGNMENT_API AFlagCollectible : public AActor
 {
@@ -32,6 +34,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMesh* m_StaticMesh;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnFlagCollectedSignature OnFlagCollectedDelegate;
 	
 	UFUNCTION()
 	void OnOverlapBegin(

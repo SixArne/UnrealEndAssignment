@@ -40,6 +40,9 @@ void ADynamicTerrainBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Bind delegate
+	//OnPlayerDelegate.AddDynamic(this, &ADynamicTerrainBase::OnPlayerDetectedCallback);
+
 	// Cache begin position
 	m_BeginPosition = this->GetActorLocation();
 
@@ -71,11 +74,14 @@ void ADynamicTerrainBase::Tick(float DeltaTime)
 		FCollisionQueryParams collisionParams{};
 		collisionParams.AddIgnoredActor(this->GetOwner());
 
+		UE_LOG(LogTemp, Warning, TEXT("Raycasting"));
 		DrawDebugLine(GetWorld(), start, end, FColor::Green, false, 10.f, 0, 1);
 		bool isHit = GetWorld()->LineTraceSingleByChannel(hitResult, start, end, ECC_Visibility);
 
 		if (isHit)
 		{
+			OnReachedBottomDelegate.Broadcast();
+
 			m_IsFalling = false;
 			m_ListeningForPlayer = false;
 			m_StaticMeshComponent->SetSimulatePhysics(false);
@@ -105,5 +111,7 @@ void ADynamicTerrainBase::OnOverlapBegin(
 		m_StaticMeshComponent->SetSimulatePhysics(true);
 
 		m_IsFalling = true;
+
+		OnPlayerDelegate.Broadcast();
 	}
 }

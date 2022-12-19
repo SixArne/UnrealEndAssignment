@@ -9,6 +9,10 @@
 
 #include "DynamicTerrainBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnReachedBottomSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDetectedSignature);
+
+
 UCLASS()
 class UNREALENDASSIGNMENT_API ADynamicTerrainBase : public AActor
 {
@@ -40,6 +44,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTexture2D* DebugSprite;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerDetectedSignature OnPlayerDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnReachedBottomSignature OnReachedBottomDelegate;
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnConstruction(const FTransform& Transform) override;
@@ -48,14 +58,14 @@ public:
 
 	// Collision
 	UFUNCTION()
-		void OnOverlapBegin(
-			UPrimitiveComponent* OverlappedComp,
-			AActor* OtherActor,
-			UPrimitiveComponent* OtherComp,
-			int32 OtherBodyIndex,
-			bool bFromSweep,
-			const FHitResult& SweepResult
-		);
+	void OnOverlapBegin(
+		UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult
+	);	
 
 private:
 	UStaticMeshComponent* m_StaticMeshComponent{};
